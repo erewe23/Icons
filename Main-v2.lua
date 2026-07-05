@@ -6,34 +6,12 @@ end)
 
 local RunService = cloneref(game:GetService("RunService"))
 local HttpService = cloneref(game:GetService("HttpService"))
-local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
-
-local function IsExploit()
-	return request and true or false
-end
 
 local function Get(url)
-	if IsExploit() then
+	if writefile and game.HttpGet then
 		return game:HttpGet(url)
 	else
-		local Success, Result = pcall(function()
-			return HttpService:GetAsync(url)
-		end)
-		if Success then
-			return Result
-		else
-			return ReplicatedStorage:WaitForChild("Request", 9999):InvokeServer({ Url = url })
-		end
-	end
-end
-
-local function Loadstring(src)
-	if not IsExploit() and ReplicatedStorage:WaitForChild("Loadstring", 9999) then
-		return function()
-			return ReplicatedStorage:WaitForChild("Loadstring", 9999):InvokeServer(src)
-		end
-	else
-		return loadstring(src)
+		return HttpService:GetAsync(url)
 	end
 end
 
@@ -44,24 +22,24 @@ local IconModule = {
 	IconThemeTag = nil,
 
 	Icons = {
-		lucide = IsExploit() and Loadstring(
+		lucide = loadstring(
 			Get("https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/lucide/dist/Icons.lua")
-		)() or require("./lucide/dist/Icons"),
-		solar = IsExploit() and Loadstring(
+		)(),
+		solar = loadstring(
 			Get("https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/solar/dist/Icons.lua")
-		)() or require("./solar/dist/Icons"),
-		craft = IsExploit() and Loadstring(
+		)(),
+		craft = loadstring(
 			Get("https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/craft/dist/Icons.lua")
-		)() or require("./craft/dist/Icons"),
-		geist = IsExploit() and Loadstring(
+		)(),
+		geist = loadstring(
 			Get("https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/geist/dist/Icons.lua")
-		)() or require("./geist/dist/Icons"),
-		sfsymbols = IsExploit() and Loadstring(
+		)(),
+		sfsymbols = loadstring(
 			Get("https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/sfsymbols/dist/Icons.lua")
-		)() or require("./sfsymbols/dist/Icons"),
-		gravity = IsExploit() and Loadstring(
+		)(),
+		gravity = loadstring(
 			Get("https://raw.githubusercontent.com/Footagesus/Icons/refs/heads/main/gravity/dist/Icons.lua")
-		)() or require("./gravity/dist/Icons"),
+		)(),
 	},
 }
 
